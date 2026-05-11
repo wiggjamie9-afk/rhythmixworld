@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RHYTHMIX WORLD · Members Area</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-2: #12121a;
+    --ink: #f4f4f8;
+    --muted: #9a9ab0;
+    --pink: #ff2e88;
+    --purple: #8a2be2;
+    --cyan: #00e5ff;
+    --grad: linear-gradient(135deg, var(--pink), var(--purple));
+    --grad-cool: linear-gradient(135deg, var(--cyan), var(--purple));
+    --border: rgba(255,255,255,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: 'Bricolage Grotesque', sans-serif; -webkit-font-smoothing: antialiased; }
+  body {
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(255,46,136,0.15), transparent 40%),
+      radial-gradient(circle at 80% 100%, rgba(138,43,226,0.18), transparent 45%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; }
+
+/* ––––– LOGIN GATE ––––– */
+.gate {
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 24px;
+}
+.gate-card {
+width: 100%;
+max-width: 420px;
+background: rgba(255,255,255,0.03);
+border: 1px solid var(–border);
+border-radius: 24px;
+padding: 36px 28px;
+backdrop-filter: blur(20px);
+text-align: center;
+}
+.logo {
+font-weight: 800;
+font-size: 28px;
+letter-spacing: -0.02em;
+background: var(–grad);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+margin-bottom: 8px;
+}
+.gate-card h1 {
+font-size: 22px;
+font-weight: 600;
+margin: 16px 0 8px;
+}
+.gate-card p {
+color: var(–muted);
+font-size: 14px;
+margin-bottom: 24px;
+line-height: 1.5;
+}
+.gate-input {
+width: 100%;
+padding: 14px 16px;
+background: rgba(0,0,0,0.4);
+border: 1px solid var(–border);
+border-radius: 12px;
+color: var(–ink);
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 15px;
+text-align: center;
+letter-spacing: 2px;
+outline: none;
+transition: border-color 0.2s;
+}
+.gate-input:focus { border-color: var(–pink); }
+.gate-btn {
+width: 100%;
+margin-top: 14px;
+padding: 14px;
+background: var(–grad);
+color: white;
+font-weight: 600;
+font-size: 15px;
+border-radius: 12px;
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.gate-btn:active { transform: scale(0.98); }
+.gate-help {
+margin-top: 20px;
+font-size: 12px;
+color: var(–muted);
+}
+.gate-help a { color: var(–cyan); }
+.gate-error {
+color: var(–pink);
+font-size: 13px;
+margin-top: 10px;
+min-height: 18px;
+}
+
+/* ––––– DASHBOARD ––––– */
+.dash { display: none; padding: 24px 18px 80px; max-width: 720px; margin: 0 auto; }
+.dash.active { display: block; }
+.topbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 16px 0;
+margin-bottom: 12px;
+}
+.logout {
+background: rgba(255,255,255,0.06);
+color: var(–muted);
+padding: 8px 14px;
+border-radius: 10px;
+font-size: 13px;
+border: 1px solid var(–border);
+}
+.welcome {
+margin: 20px 0 32px;
+}
+.welcome .pill {
+display: inline-block;
+background: rgba(0,229,255,0.1);
+border: 1px solid rgba(0,229,255,0.3);
+color: var(–cyan);
+font-size: 11px;
+font-weight: 600;
+letter-spacing: 0.15em;
+padding: 6px 12px;
+border-radius: 100px;
+margin-bottom: 14px;
+text-transform: uppercase;
+}
+.welcome h1 {
+font-size: 38px;
+font-weight: 800;
+letter-spacing: -0.03em;
+line-height: 1.05;
+margin-bottom: 12px;
+}
+.welcome h1 span {
+background: var(–grad);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+}
+.welcome p { color: var(–muted); font-size: 15px; line-height: 1.5; }
+
+/* Section title */
+.section { margin-bottom: 36px; }
+.section-title {
+font-size: 11px;
+font-weight: 600;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 14px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.section-title::before {
+content: ‘’;
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: var(–cyan);
+box-shadow: 0 0 10px var(–cyan);
+}
+
+/* Product cards */
+.product {
+background: rgba(255,255,255,0.03);
+border: 1px solid var(–border);
+border-radius: 18px;
+padding: 20px;
+margin-bottom: 12px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 16px;
+transition: border-color 0.2s, transform 0.15s;
+}
+.product:active { transform: scale(0.99); }
+.product-info h3 {
+font-size: 16px;
+font-weight: 600;
+margin-bottom: 4px;
+}
+.product-info p {
+font-size: 13px;
+color: var(–muted);
+}
+.product-btn {
+background: var(–grad);
+color: white;
+padding: 10px 16px;
+border-radius: 10px;
+font-size: 13px;
+font-weight: 600;
+white-space: nowrap;
+}
+.product.locked { opacity: 0.55; }
+.product.locked .product-btn {
+background: rgba(255,255,255,0.08);
+color: var(–muted);
+}
+
+/* Tutorial cards */
+.tutorial {
+background: rgba(255,255,255,0.03);
+border: 1px solid var(–border);
+border-radius: 18px;
+padding: 18px;
+margin-bottom: 10px;
+}
+.tutorial-tag {
+display: inline-block;
+font-size: 10px;
+letter-spacing: 0.15em;
+font-weight: 600;
+padding: 4px 8px;
+border-radius: 6px;
+margin-bottom: 8px;
+text-transform: uppercase;
+}
+.tag-new { background: rgba(255,46,136,0.15); color: var(–pink); }
+.tag-pro { background: rgba(138,43,226,0.18); color: #c08aff; }
+.tag-tip { background: rgba(0,229,255,0.12); color: var(–cyan); }
+.tutorial h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.tutorial p { font-size: 13px; color: var(–muted); line-height: 1.5; }
+
+/* Roadmap */
+.roadmap-item {
+display: flex;
+gap: 14px;
+padding: 14px 0;
+border-bottom: 1px solid var(–border);
+}
+.roadmap-item:last-child { border-bottom: none; }
+.roadmap-status {
+flex-shrink: 0;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+margin-top: 6px;
+}
+.status-live { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+.status-soon { background: var(–cyan); box-shadow: 0 0 8px var(–cyan); }
+.status-planned { background: var(–muted); }
+.roadmap-text h5 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.roadmap-text small { font-size: 12px; color: var(–muted); }
+
+/* Quick stats row */
+.stats {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-bottom: 28px;
+}
+.stat {
+background: rgba(255,255,255,0.03);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 14px 10px;
+text-align: center;
+}
+.stat .num {
+font-size: 22px;
+font-weight: 800;
+background: var(–grad);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+}
+.stat .label {
+font-size: 10px;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-top: 2px;
+}
+
+/* Footer */
+.foot {
+margin-top: 40px;
+text-align: center;
+font-size: 12px;
+color: var(–muted);
+}
+.foot a { color: var(–cyan); }
+</style>
+
+</head>
+<body>
+
+<!-- ============ LOGIN GATE ============ -->
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="logo">RHYTHMIX</div>
+    <h1>Members Area</h1>
+    <p>Enter your access password to unlock your dashboard, downloads, and exclusive content.</p>
+    <input type="password" id="pw" class="gate-input" placeholder="ACCESS CODE" autocomplete="off" />
+    <button class="gate-btn" onclick="tryLogin()">Unlock →</button>
+    <div class="gate-error" id="err"></div>
+    <div class="gate-help">
+      Don't have a code yet? <a href="index.html">Get Lifetime Access →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+
+<div class="dash" id="dash">
+  <div class="topbar">
+    <div class="logo">RHYTHMIX</div>
+    <button class="logout" onclick="logout()">Sign out</button>
+  </div>
+
+  <div class="welcome">
+    <span class="pill">● Member Access</span>
+    <h1>Welcome back,<br><span>creator.</span></h1>
+    <p>Everything you need to generate, master, and ship. Bookmark this page — it's yours.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">23</div><div class="label">AI Features</div></div>
+    <div class="stat"><div class="num">∞</div><div class="label">Downloads</div></div>
+    <div class="stat"><div class="num">VIP</div><div class="label">Status</div></div>
+  </div>
+
+  <!-- DOWNLOADS -->
+
+  <div class="section">
+    <div class="section-title">Your Downloads</div>
+
+```
+<div class="product">
+  <div class="product-info">
+    <h3>AI Cinematic Video Kit</h3>
+    <p>12-shot list, prompts, CapCut LUT pack</p>
+  </div>
+  <a href="https://gumroad.com" class="product-btn" target="_blank">Download</a>
+</div>
+
+<div class="product">
+  <div class="product-info">
+    <h3>Music Producer Mega Kit</h3>
+    <p>Stems, presets, BPM/key sheets</p>
+  </div>
+  <a href="https://gumroad.com" class="product-btn" target="_blank">Download</a>
+</div>
+
+<div class="product">
+  <div class="product-info">
+    <h3>Hot Mess — Production Files</h3>
+    <p>Luma prompts + CapCut project</p>
+  </div>
+  <a href="https://gumroad.com" class="product-btn" target="_blank">Download</a>
+</div>
+
+<div class="product locked">
+  <div class="product-info">
+    <h3>Let's Rise — Visualizer Pack</h3>
+    <p>Available next drop · members only</p>
+  </div>
+  <span class="product-btn">Soon</span>
+</div>
+```
+
+  </div>
+
+  <!-- TUTORIALS -->
+
+  <div class="section">
+    <div class="section-title">Exclusive Tutorials</div>
+
+```
+<div class="tutorial">
+  <span class="tutorial-tag tag-new">New this week</span>
+  <h4>Cinematic Luma Workflow (iPhone-only)</h4>
+  <p>The exact 12-shot pipeline used for Hot Mess — from prompt to CapCut export.</p>
+</div>
+
+<div class="tutorial">
+  <span class="tutorial-tag tag-pro">Pro tip</span>
+  <h4>Stack Free Tiers Without Getting Locked Out</h4>
+  <p>How to rotate Kling, Vidu, and Hailuo for unlimited generations.</p>
+</div>
+
+<div class="tutorial">
+  <span class="tutorial-tag tag-tip">Quick win</span>
+  <h4>Teal/Orange Grade in 60 Seconds</h4>
+  <p>The CapCut color recipe that makes AI clips look cinema-grade.</p>
+</div>
+```
+
+  </div>
+
+  <!-- ROADMAP -->
+
+  <div class="section">
+    <div class="section-title">What's Coming Next</div>
+    <div class="roadmap-item">
+      <div class="roadmap-status status-live"></div>
+      <div class="roadmap-text"><h5>Members area</h5><small>Live now — you're using it</small></div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-status status-soon"></div>
+      <div class="roadmap-text"><h5>Producer Pack Vol. 2</h5><small>Dropping this month</small></div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-status status-soon"></div>
+      <div class="roadmap-text"><h5>Album: The Light We Carry</h5><small>Mixing — release Q3</small></div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-status status-planned"></div>
+      <div class="roadmap-text"><h5>Cinema Edit Suite (web app)</h5><small>Planning phase</small></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Questions? Reply to your Gumroad receipt or DM <a href="https://youtube.com/@jamiewigg-t4k" target="_blank">@jamiewigg-t4k</a>.<br><br>
+    <a href="index.html">← Back to main site</a>
+  </div>
+</div>
+
+<script>
+  const PASSWORD = "RHYTHMIX2026";
+  const KEY = "rhythmix_member";
+
+  function tryLogin() {
+    const input = document.getElementById('pw').value.trim().toUpperCase();
+    const err = document.getElementById('err');
+    if (input === PASSWORD) {
+      localStorage.setItem(KEY, 'true');
+      showDash();
+    } else {
+      err.textContent = 'Incorrect code. Check your Gumroad receipt.';
+      document.getElementById('pw').value = '';
+    }
+  }
+
+  function showDash() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('dash').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function logout() {
+    localStorage.removeItem(KEY);
+    location.reload();
+  }
+
+  // Auto-login if previously authenticated
+  if (localStorage.getItem(KEY) === 'true') {
+    showDash();
+  }
+
+  // Enter key submits
+  document.getElementById('pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryLogin();
+  });
+</script>
+
+</body>
+</html>
